@@ -1,0 +1,22 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'io.doov', name: 'doov-gradle-generator', version: '1.0-SNAPSHOT'
+    }
+}
+
+apply plugin: 'io.doov.generator'
+
+dependencies {
+    compile project(':doov-genetic-base')
+}
+
+doovCodeGen {
+    doovMapGenGenetic {
+        packageFilter = 'io.doov.genetic'
+        fieldClass = 'io.doov.genetic.field.GeneticFieldId'
+        sourceClass = 'io.doov.genetic.model.Pixel'
+    }
+}
