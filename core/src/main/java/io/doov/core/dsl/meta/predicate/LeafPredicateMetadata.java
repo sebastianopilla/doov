@@ -34,7 +34,7 @@ public class LeafPredicateMetadata<M extends LeafPredicateMetadata<M>> extends L
     private final AtomicInteger evalTrue = new AtomicInteger();
     private final AtomicInteger evalFalse = new AtomicInteger();
 
-    private LeafPredicateMetadata(Deque<Element> elements, MetadataType type) {
+    public LeafPredicateMetadata(Deque<Element> elements, MetadataType type) {
         super(elements, type);
     }
 

@@ -20,3 +20,9 @@ doovCodeGen {
         sourceClass = 'io.doov.genetic.model.Pixel'
     }
 }
+
+idea {
+    module {
+        sourceDirs += file("$buildDir/doov/doovMapGenGenetic")
+    }
+}

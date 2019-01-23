@@ -27,7 +27,7 @@ public class BinaryPredicateMetadata extends BinaryMetadata implements Predicate
     private final AtomicInteger evalTrue = new AtomicInteger();
     private final AtomicInteger evalFalse = new AtomicInteger();
 
-    BinaryPredicateMetadata(Metadata left, Operator operator, Metadata right) {
+    public BinaryPredicateMetadata(Metadata left, Operator operator, Metadata right) {
         super(left, operator, right);
     }
 
