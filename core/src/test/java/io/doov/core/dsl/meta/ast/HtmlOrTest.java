@@ -44,12 +44,12 @@ public class HtmlOrTest {
 
     @Test
     @Disabled
-    // FIXME AstHtmlRemderer
+    // FIXME AstHtmlRenderer
     void or_true_false_complex() {
         A = alwaysTrue("A");
         B = alwaysFalse("B");
         C = alwaysTrue("C");
-        result = when(A.or(B.or(C))).validate().withShortCircuit(false).execute();
+        result = when(A.or(B).and(C)).validate().withShortCircuit(false).execute();
         doc = documentOf(result);
 
         assertTrue(result.value());
@@ -62,15 +62,15 @@ public class HtmlOrTest {
         assertThat(doc.select("ul.dsl-ul-binary-child")).hasSize(0);
         assertThat(doc.select("ul.dsl-ul-unary")).hasSize(0);
         assertThat(doc.select("div.percentage-value")).extracting(Element::text)
-                .containsExactly("100 %", "0 %", "100 %");
+                        .containsExactly("100 %", "0 %", "100 %");
         assertThat(doc.select("span.dsl-token-operator")).extracting(Element::text)
-                .containsExactly("always true", "always false", "always true");
+                        .containsExactly("always true", "always false", "always true");
         assertThat(doc.select("span.dsl-token-value")).extracting(Element::text)
-                .containsExactly("A", "B", "C");
+                        .containsExactly("A", "B", "C");
         assertThat(doc.select("span.dsl-token-binary")).extracting(Element::text)
-                .containsExactly("or", "or");
+                        .containsExactly("or", "or");
         assertThat(doc.select("ul.dsl-ul-binary")).extracting(Element::text)
-                .containsExactly("0 % always false B or 100 % always true C");
+                        .containsExactly("0 % always false B or 100 % always true C");
     }
 
     @Test
@@ -93,20 +93,18 @@ public class HtmlOrTest {
         assertThat(doc.select("ul.dsl-ul-binary-child")).hasSize(0);
         assertThat(doc.select("ul.dsl-ul-unary")).hasSize(0);
         assertThat(doc.select("div.percentage-value")).extracting(Element::text)
-                .containsExactly("0 %", "100 %", "100 %");
+                        .containsExactly("0 %", "100 %", "100 %");
         assertThat(doc.select("span.dsl-token-operator")).extracting(Element::text)
-                .containsExactly("always false", "always true", "always true");
+                        .containsExactly("always false", "always true", "always true");
         assertThat(doc.select("span.dsl-token-value")).extracting(Element::text)
-                .containsExactly("A", "B", "C");
+                        .containsExactly("A", "B", "C");
         assertThat(doc.select("span.dsl-token-binary")).extracting(Element::text)
-                .containsExactly("or", "and");
+                        .containsExactly("or", "and");
         assertThat(doc.select("ul.dsl-ul-binary")).extracting(Element::text)
-                .containsExactly("100 % always true B and 100 % always true C");
+                        .containsExactly("100 % always true B and 100 % always true C");
     }
 
     @Test
-    @Disabled
-    // FIXME AstHtmlRemderer
     void or_false_false() {
         A = alwaysFalse("A");
         B = alwaysFalse("B");
@@ -123,13 +121,13 @@ public class HtmlOrTest {
         assertThat(doc.select("ul.dsl-ul-binary-child")).hasSize(0);
         assertThat(doc.select("ul.dsl-ul-unary")).hasSize(0);
         assertThat(doc.select("div.percentage-value")).extracting(Element::text)
-                .containsExactly("0 %", "0 %");
+                        .containsExactly("0 %", "0 %");
         assertThat(doc.select("span.dsl-token-operator")).extracting(Element::text)
-                .containsExactly("always false", "always false");
+                        .containsExactly("always false", "always false");
         assertThat(doc.select("span.dsl-token-value")).extracting(Element::text)
-                .containsExactly("A", "B");
+                        .containsExactly("A", "B");
         assertThat(doc.select("span.dsl-token-binary")).extracting(Element::text)
-                .containsExactly("or");
+                        .containsExactly("or");
     }
 
     @Test
@@ -152,20 +150,18 @@ public class HtmlOrTest {
         assertThat(doc.select("ul.dsl-ul-binary-child")).hasSize(0);
         assertThat(doc.select("ul.dsl-ul-unary")).hasSize(0);
         assertThat(doc.select("div.percentage-value")).extracting(Element::text)
-                .containsExactly("0 %", "0 %", "100 %");
+                        .containsExactly("0 %", "0 %", "100 %");
         assertThat(doc.select("span.dsl-token-operator")).extracting(Element::text)
-                .containsExactly("always false", "always false", "always true");
+                        .containsExactly("always false", "always false", "always true");
         assertThat(doc.select("span.dsl-token-value")).extracting(Element::text)
-                .containsExactly("A", "B", "C");
+                        .containsExactly("A", "B", "C");
         assertThat(doc.select("span.dsl-token-binary")).extracting(Element::text)
-                .containsExactly("or", "and");
+                        .containsExactly("or", "and");
         assertThat(doc.select("ul.dsl-ul-binary")).extracting(Element::text)
-                .containsExactly("0 % always false B and 100 % always true C");
+                        .containsExactly("0 % always false B and 100 % always true C");
     }
 
     @Test
-    @Disabled
-    // FIXME AstHtmlRemderer
     void or_true_false() {
         A = alwaysTrue("A");
         B = alwaysFalse("B");
@@ -182,18 +178,16 @@ public class HtmlOrTest {
         assertThat(doc.select("ul.dsl-ul-binary-child")).hasSize(0);
         assertThat(doc.select("ul.dsl-ul-unary")).hasSize(0);
         assertThat(doc.select("div.percentage-value")).extracting(Element::text)
-                .containsExactly("100 %", "0 %");
+                        .containsExactly("100 %", "0 %");
         assertThat(doc.select("span.dsl-token-operator")).extracting(Element::text)
-                .containsExactly("always true", "always false");
+                        .containsExactly("always true", "always false");
         assertThat(doc.select("span.dsl-token-value")).extracting(Element::text)
-                .containsExactly("A", "B");
+                        .containsExactly("A", "B");
         assertThat(doc.select("span.dsl-token-binary")).extracting(Element::text)
-                .containsExactly("or");
+                        .containsExactly("or");
     }
 
     @Test
-    @Disabled
-    // FIXME AstHtmlRemderer
     void or_false_true() {
         A = alwaysFalse("A");
         B = alwaysTrue("B");
@@ -210,18 +204,16 @@ public class HtmlOrTest {
         assertThat(doc.select("ul.dsl-ul-binary-child")).hasSize(0);
         assertThat(doc.select("ul.dsl-ul-unary")).hasSize(0);
         assertThat(doc.select("div.percentage-value")).extracting(Element::text)
-                .containsExactly("0 %", "100 %");
+                        .containsExactly("0 %", "100 %");
         assertThat(doc.select("span.dsl-token-operator")).extracting(Element::text)
-                .containsExactly("always false", "always true");
+                        .containsExactly("always false", "always true");
         assertThat(doc.select("span.dsl-token-value")).extracting(Element::text)
-                .containsExactly("A", "B");
+                        .containsExactly("A", "B");
         assertThat(doc.select("span.dsl-token-binary")).extracting(Element::text)
-                .containsExactly("or");
+                        .containsExactly("or");
     }
 
     @Test
-    @Disabled
-    // FIXME AstHtmlRemderer
     void or_true_true() {
         A = alwaysTrue("A");
         B = alwaysTrue("B");
@@ -238,18 +230,16 @@ public class HtmlOrTest {
         assertThat(doc.select("ul.dsl-ul-binary-child")).hasSize(0);
         assertThat(doc.select("ul.dsl-ul-unary")).hasSize(0);
         assertThat(doc.select("div.percentage-value")).extracting(Element::text)
-                .containsExactly("100 %", "100 %");
+                        .containsExactly("100 %", "100 %");
         assertThat(doc.select("span.dsl-token-operator")).extracting(Element::text)
-                .containsExactly("always true", "always true");
+                        .containsExactly("always true", "always true");
         assertThat(doc.select("span.dsl-token-value")).extracting(Element::text)
-                .containsExactly("A", "B");
+                        .containsExactly("A", "B");
         assertThat(doc.select("span.dsl-token-binary")).extracting(Element::text)
-                .containsExactly("or");
+                        .containsExactly("or");
     }
 
     @Test
-    @Disabled
-    // FIXME AstHtmlRemderer
     void or_field_true_true() {
         GenericModel model = new GenericModel();
         IntegerFieldInfo zero = model.intField(0, "zero");
@@ -269,15 +259,15 @@ public class HtmlOrTest {
         assertThat(doc.select("ul.dsl-ul-binary-child")).hasSize(0);
         assertThat(doc.select("ul.dsl-ul-unary")).hasSize(0);
         assertThat(doc.select("div.percentage-value")).extracting(Element::text)
-                .containsExactly("100 %", "100 %");
+                        .containsExactly("100 %", "100 %");
         assertThat(doc.select("span.dsl-token-operator")).extracting(Element::text)
-                .containsExactly("<", "before", "today");
+                        .containsExactly("<", "before", "today");
         assertThat(doc.select("span.dsl-token-field")).extracting(Element::text)
-                .containsExactly("zero", "yesterday");
+                        .containsExactly("zero", "yesterday");
         assertThat(doc.select("span.dsl-token-value")).extracting(Element::text)
-                .containsExactly("4");
+                        .containsExactly("4");
         assertThat(doc.select("span.dsl-token-binary")).extracting(Element::text)
-                .containsExactly("or");
+                        .containsExactly("or");
     }
 
     @AfterEach
