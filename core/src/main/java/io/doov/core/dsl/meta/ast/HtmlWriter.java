@@ -133,6 +133,38 @@ public class HtmlWriter {
         write(beginDivWithStyle(style, classes));
     }
 
+    protected void writeBeginTd(String... classes) {
+        write(beginTd(classes));
+    }
+
+    protected void writeEndTd() {
+        write(endTd());
+    }
+
+    protected void writeBeginTr(String... classes) {
+        write(beginTr(classes));
+    }
+
+    protected void writeEndTr() {
+        write(endTr());
+    }
+
+    protected void writeBeginI(String... classes) {
+        write(beginI(classes));
+    }
+
+    protected void writeEndI() {
+        write(endI());
+    }
+
+    protected void writeBeginTable(String... classes) {
+        write(beginTable(classes));
+    }
+
+    protected void writeEndTable() {
+        write(endTable());
+    }
+
     protected void writeEndDiv() {
         write(endDiv());
     }
@@ -213,6 +245,38 @@ public class HtmlWriter {
 
     static String endSpan() {
         return endElement("span");
+    }
+
+    static String beginTable(String... classes) {
+        return beginElement("table", classes);
+    }
+
+    static String endTable() {
+        return endElement("table");
+    }
+
+    static String beginTd(String... classes) {
+        return beginElement("td", classes);
+    }
+
+    static String endTd() {
+        return endElement("td");
+    }
+
+    static String beginTr(String[] classes) {
+        return beginElement("tr", classes);
+    }
+
+    static String endTr() {
+        return endElement("tr");
+    }
+
+    static String beginI(String[] classes) {
+        return beginElement("i", classes);
+    }
+
+    static String endI() {
+        return endElement("i");
     }
 
     static String exclusionBar(PredicateMetadata metadata, ExclusionBar cssClass, Locale locale) {

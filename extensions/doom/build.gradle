@@ -1,0 +1,5 @@
+ext.pomProjectName = 'dOOv Mapping html visitor Extension'
+
+dependencies {
+    compile project(':doov-core')
+}
