@@ -43,13 +43,11 @@ public class HtmlOrTest {
     private Document doc;
 
     @Test
-    @Disabled
-    // FIXME AstHtmlRenderer
     void or_true_false_complex() {
         A = alwaysTrue("A");
         B = alwaysFalse("B");
         C = alwaysTrue("C");
-        result = when(A.or(B).and(C)).validate().withShortCircuit(false).execute();
+        result = when(A.or(B.or(C))).validate().withShortCircuit(false).execute();
         doc = documentOf(result);
 
         assertTrue(result.value());
@@ -74,8 +72,6 @@ public class HtmlOrTest {
     }
 
     @Test
-    @Disabled
-    // FIXME AstHtmlRemderer
     void or_false_true_complex() {
         A = alwaysFalse("A");
         B = alwaysTrue("B");
@@ -131,8 +127,6 @@ public class HtmlOrTest {
     }
 
     @Test
-    @Disabled
-    // FIXME AstHtmlRemderer
     void or_false_false_complex() {
         A = alwaysFalse("A");
         B = alwaysFalse("B");
