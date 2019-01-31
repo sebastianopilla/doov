@@ -17,14 +17,18 @@ package io.doov.core.dsl;
 
 import io.doov.core.FieldId;
 import io.doov.core.dsl.impl.DefaultCondition;
+import io.doov.core.dsl.lang.*;
 import io.doov.core.dsl.lang.Readable;
+import io.doov.core.dsl.mapping.DefaultMappingRule;
+import io.doov.core.dsl.mapping.FieldInput;
+import io.doov.core.dsl.mapping.builder.SimpleStepMap;
 
 /**
  * Interface for all field types.
  *
  * Generic type parameter {@link T} defines the type of the field.
  */
-public interface DslField<T> extends Readable {
+public interface DslField<T> extends Readable, SimpleStepMap<T> {
 
     FieldId id();
 
@@ -34,4 +38,12 @@ public interface DslField<T> extends Readable {
      * @return the default condition
      */
     DefaultCondition<T> getDefaultCondition();
+
+    /**
+     * Give us access to SimpleStepMap methods
+     * @return itself
+     */
+    default MappingInput<T> input() {
+        return new FieldInput<>(this);
+    }
 }

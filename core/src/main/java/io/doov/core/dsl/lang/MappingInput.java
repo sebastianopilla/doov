@@ -5,13 +5,14 @@ package io.doov.core.dsl.lang;
 
 import io.doov.core.FieldModel;
 import io.doov.core.dsl.DslModel;
+import io.doov.core.dsl.mapping.builder.SimpleStepMap;
 
 /**
  * Mapping input
  *
  * @param <T> input value type
  */
-public interface MappingInput<T> extends DSLBuilder {
+public interface MappingInput<T> extends DSLBuilder, SimpleStepMap<T> {
 
     /**
      * Reads the input value
@@ -29,4 +30,12 @@ public interface MappingInput<T> extends DSLBuilder {
      * @return true if the input can read a value from the model
      */
     boolean validate(FieldModel inModel);
+
+    /**
+     * Give us access to SimpleStepMap methods
+     * @return itself
+     */
+    default MappingInput<T> input() {
+        return this;
+    }
 }

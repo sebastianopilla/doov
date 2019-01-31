@@ -200,7 +200,7 @@ public class DOOV {
      * @return map step
      */
     public static <I> SimpleStepMap<I> map(DslField<I> inFieldInfo) {
-        return new SimpleStepMap<>(inFieldInfo);
+        return inFieldInfo;
     }
 
     /**

@@ -11,27 +11,27 @@ import io.doov.core.dsl.mapping.*;
  *
  * @param <I> in type
  */
-public class SimpleStepMap<I> {
+public interface SimpleStepMap<I> {
 
-    private final MappingInput<I> input;
+    MappingInput<I> input();
 
-    public SimpleStepMap(MappingInput<I> input) {
-        this.input = input;
-    }
+    //public SimpleStepMap(MappingInput<I> input) {
+    //    this.input = input;
+    //}
 
-    public SimpleStepMap(DslField<I> inFieldInfo) {
-        this(new FieldInput<>(inFieldInfo));
-    }
+    //public SimpleStepMap(DslField<I> inFieldInfo) {
+    //    this(new FieldInput<>(inFieldInfo));
+    //}
 
     /**
      * Return the step mapping
      *
-     * @param typeConverter type converter
      * @param <O>           out type
+     * @param typeConverter type converter
      * @return the step mapping
      */
-    public <O> SimpleStepMap<O> using(TypeConverter<I, O> typeConverter) {
-        return new SimpleStepMap<>(new ConverterInput<>(input, typeConverter));
+    default <O> SimpleStepMap<O> using(TypeConverter<I, O> typeConverter) {
+        return () -> new ConverterInput<>(this.input(),typeConverter);
     }
 
     /**
@@ -40,8 +40,8 @@ public class SimpleStepMap<I> {
      * @param output consumer output
      * @return the mapping rule
      */
-    public DefaultMappingRule<I> to(MappingOutput<I> output) {
-        return new DefaultMappingRule<>(input, output);
+    default DefaultMappingRule<I> to(MappingOutput<I> output) {
+        return new DefaultMappingRule<>(input(), output);
     }
 
     /**
@@ -50,7 +50,7 @@ public class SimpleStepMap<I> {
      * @param outFieldInfo out field info
      * @return the mapping rule
      */
-    public DefaultMappingRule<I> to(DslField<I> outFieldInfo) {
+    default DefaultMappingRule<I> to(DslField<I> outFieldInfo) {
         return this.to(new FieldOutput<>(outFieldInfo));
     }
 
@@ -60,7 +60,7 @@ public class SimpleStepMap<I> {
      * @param consumer out field info
      * @return the mapping rule
      */
-    public DefaultMappingRule<I> to(TriConsumer<DslModel, Context, I> consumer) {
+    default DefaultMappingRule<I> to(TriConsumer<DslModel, Context, I> consumer) {
         return this.to(new ConsumerOutput<>(consumer));
     }
 }
