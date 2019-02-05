@@ -4,7 +4,6 @@
 package io.doov.js.ast;
 
 import static io.doov.core.dsl.meta.DefaultOperator.*;
-import static io.doov.core.dsl.meta.ElementType.OPERATOR;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 import java.io.IOException;
@@ -119,42 +118,10 @@ public class AstJavascriptWriter {
                 break;
             case LEAF_PREDICATE: // Same processing as FIELD_PREDICATE
             case FIELD_PREDICATE:
-                LeafMetadata metaLeaf = (LeafMetadata) metadata;
-                if (metaLeaf.elementsAsList().size() == 2 && metaLeaf.elementsAsList().get(1) == not) {
-                    // test eval_not_false/true out of a leaf metadata
-                    returnValue[0] += "!(" + writeElement((Element) metaLeaf.elementsAsList().get(0),
-                            "", metaLeaf) + ")";
-                } else {
-                    metaLeaf.elementsAsList().forEach(elt -> {
-                        boolean matched = false;
-                        if (((Element) elt).getType() == OPERATOR) {
-                            DefaultOperator operator = (DefaultOperator) ((Element) elt).getReadable();
-                            if (exceptionOperator.contains(operator)) {
-                                returnValue[0] = writeElement((Element) elt, returnValue[0], metaLeaf);
-                                matched = true;
-                            }
-                        }
-                        if (!matched) {
-                            returnValue[0] += writeElement(((Element) elt), "", metaLeaf);
-                        }
-
-                    });
-                }
-                break;
             case FIELD_PREDICATE_MATCH_ANY:
-                LeafMetadata metaLeafTmp = ((LeafMetadata) metadata);
+                LeafMetadata metaLeafTmp = (LeafMetadata) metadata;
                 metaLeafTmp.elementsAsList().forEach(elt -> {
-                    boolean matched = false;
-                    if (((Element) elt).getType() == OPERATOR) {
-                        DefaultOperator operator = (DefaultOperator) ((Element) elt).getReadable();
-                        if (operator == match_none || operator == match_all || operator == match_any) {
-                            returnValue[0] = writeElement(((Element) elt), returnValue[0], metaLeafTmp);
-                            matched = true;
-                        }
-                    }
-                    if (!matched) {
-                        returnValue[0] += writeElement(((Element) elt), "", metaLeafTmp);
-                    }
+                    returnValue[0] += writeElement(((Element) elt), "", metaLeafTmp);
                 });
                 break;
             case NARY_PREDICATE:
@@ -319,27 +286,6 @@ public class AstJavascriptWriter {
             case or:
                 returnValueTab[0] += " || ";
                 break;
-            case match_any:
-                anyAllNoneContains = 0;
-                isMatch = true;
-                return isIterableOrField(metadata.left().findFirst().get()) ? returnValueTab[0] + ".some(function" +
-                        "(element){ " +
-                        "return "
-                        : "[" + returnValueTab[0] + "].some(function(element){ return ";
-            case match_all:
-                anyAllNoneContains = 1;
-                isMatch = true;
-                return isIterableOrField(metadata.left().findFirst().get()) ? returnValueTab[0] + ".every(function" +
-                        "(element){" +
-                        " return "
-                        : "[" + returnValueTab[0] + "].every(function(element){ return ";
-            case match_none:
-                anyAllNoneContains = 2;
-                isMatch = true;
-                return isIterableOrField(metadata.left().findFirst().get()) ? returnValueTab[0] + ".every(function" +
-                        "(element){" +
-                        " return "
-                        : "[" + returnValueTab[0] + "].every(function(element){ return ";
             case any_match_values:
                 anyAllNoneContains = 0;
                 isMatch = true;
@@ -361,9 +307,6 @@ public class AstJavascriptWriter {
                         "(element){" +
                         " return "
                         : "[" + returnValueTab[0] + "].every(function(element){ return ";
-            case not:
-                returnValueTab[0] += "!(" + returnValueTab[0] + ")";
-                break;
             case always_true:
                 returnValueTab[0] += " true ";
                 break;
@@ -492,9 +435,8 @@ public class AstJavascriptWriter {
                 isMatch = true;
                 String[] tabString = returnValueTab[0].split(" ");
                 String argString = tabString[tabString.length - 1];
-                return returnValueTab[0].replace(argString, "") + "[" + argString + "].some(function(element){ return" +
-                        " " +
-                        "element.match(/^";
+                return returnValueTab[0].replace(argString, "") + "[" + argString + "]" +
+                        ".some(function(element){ return element.match(/^";
             case ends_with:
                 isEndsWith = true;
                 useRegexp = true;
@@ -582,8 +524,8 @@ public class AstJavascriptWriter {
                 return tmpTodayValue;
             case first_day_of_next_month:
                 isTemporalPredicate = true;
-                tmpTodayValue = returnValueTab[0] + "moment(moment().format(\"YYYY-MM-DD\")).add(1,'month').startOf" +
-                        "('month')";
+                tmpTodayValue = returnValueTab[0] + "moment(moment().format(\"YYYY-MM-DD\"))" +
+                        ".add(1,'month').startOf('month')";
                 return tmpTodayValue;
             case first_day_of_year:
                 isTemporalPredicate = true;
@@ -591,8 +533,8 @@ public class AstJavascriptWriter {
                 return tmpTodayValue;
             case first_day_of_next_year:
                 isTemporalPredicate = true;
-                tmpTodayValue = returnValueTab[0] + "moment(moment().format(\"YYYY-MM-DD\")).add(1,'year').startOf" +
-                        "('year')";
+                tmpTodayValue = returnValueTab[0] + "moment(moment().format(\"YYYY-MM-DD\"))" +
+                        ".add(1,'year').startOf('year')";
                 return tmpTodayValue;
             case last_day_of_month:
                 isTemporalPredicate = true;
