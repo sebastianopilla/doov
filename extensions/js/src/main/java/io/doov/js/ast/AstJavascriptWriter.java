@@ -107,7 +107,12 @@ public class AstJavascriptWriter {
         switch (metadata.type()) {
             case LEAF_VALUE:
                 ((LeafMetadata) metadata).elementsAsList().forEach(elt ->
-                        returnValue[0] += writeElement((Element) elt, returnValue[0], metadata));
+                {
+                    if (!alreadyComputed) {
+                        returnValue[0] += writeElement((Element) elt, returnValue[0], metadata);
+                    }
+                });
+                alreadyComputed = false;
                 break;
             case BINARY_PREDICATE:
                 returnValue[0] += writeBinary(metadata);
@@ -538,19 +543,19 @@ public class AstJavascriptWriter {
                 tmpTodayValue = returnValueTab[0] + "moment(moment().format(\"YYYY-MM-DD\"))";
                 return tmpTodayValue;
             case today_plus:
-                parenthesisCount++;
                 isTemporalPredicate = true;
                 returnValueTab[0] += "moment(moment().format(\"YYYY-MM-DD\")).add(";
-                deque = ((LeafMetadata) metadata.right().findFirst().get()).elements();
+                deque = ((LeafMetadata) metadata).elements();
+                deque.pollFirst();
                 returnValueTab[0] += writeElement(deque.pollFirst(), "", metadata) + ", ";
                 returnValueTab[0] += writeElement(deque.pollFirst(), "", metadata);
                 alreadyComputed = true;
                 return returnValueTab[0] + ")";
             case today_minus:
-                parenthesisCount++;
                 isTemporalPredicate = true;
                 returnValueTab[0] += "moment(moment().format(\"YYYY-MM-DD\")).subtract(";
-                deque = ((LeafMetadata) metadata.right().findFirst().get()).elements();
+                deque = ((LeafMetadata) metadata).elements();
+                deque.pollFirst();
                 returnValueTab[0] += writeElement(deque.pollFirst(), "", metadata) + ", ";
                 returnValueTab[0] += writeElement(deque.pollFirst(), "", metadata);
                 alreadyComputed = true;
