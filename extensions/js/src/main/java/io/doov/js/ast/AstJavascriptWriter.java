@@ -105,10 +105,6 @@ public class AstJavascriptWriter {
         String[] returnValue = new String[1];
         returnValue[0] = "";
         switch (metadata.type()) {
-            case RULE:
-                break;
-            case WHEN:
-                break;
             case LEAF_VALUE:
                 ((LeafMetadata) metadata).elementsAsList().forEach(elt ->
                         returnValue[0] += writeElement((Element) elt, returnValue[0], metadata));
@@ -121,11 +117,8 @@ public class AstJavascriptWriter {
                 LeafMetadata metaLeaf = (LeafMetadata) metadata;
                 if (metaLeaf.elementsAsList().size() == 2 && metaLeaf.elementsAsList().get(1) == not) {
                     // test eval_not_false/true out of a leaf metadata
-                    returnValue[0] += "!(" + writeElement((Element) metaLeaf.elementsAsList().get(0), "", metaLeaf) + ")";
-                } else if (metaLeaf.elementsAsList().size() == 3 && ((Element) metaLeaf.elementsAsList().get(1)).getReadable() == xor) {
-                    // test eval_XOR_* special case
-                    returnValue[0] += writeXOR(((Element) metaLeaf.elementsAsList().get(0)),
-                            ((Element) metaLeaf.elementsAsList().get(2)));
+                    returnValue[0] += "!(" + writeElement((Element) metaLeaf.elementsAsList().get(0),
+                            "", metaLeaf) + ")";
                 } else {
                     metaLeaf.elementsAsList().forEach(elt -> {
                         boolean matched = false;
@@ -166,33 +159,32 @@ public class AstJavascriptWriter {
                 returnValue[0] += writeUnary(metadata);
                 break;
             case EMPTY:
-                returnValue[0] += "/*EMPTY*/";
+                returnValue[0] += "/*EMPTY not managed yet*/";
                 break;
             case SINGLE_MAPPING:
-                returnValue[0] += "/*SINGLE_MAPPING*/";
+                returnValue[0] += "/*SINGLE_MAPPING not managed yet*/";
                 break;
             case MULTIPLE_MAPPING:
-                returnValue[0] += "/*MULTIPLE_MAPPING*/";
+                returnValue[0] += "/*MULTIPLE_MAPPING not managed yet*/";
                 break;
             case THEN_MAPPING:
-                returnValue[0] += "/*THEN_MAPPING*/";
+                returnValue[0] += "/*THEN_MAPPING not managed yet*/";
                 break;
             case ELSE_MAPPING:
-                returnValue[0] += "/*ELSE_MAPPING*/";
+                returnValue[0] += "/*ELSE_MAPPING not managed yet*/";
                 break;
             case MAPPING_INPUT:
-                returnValue[0] += "/*MAPPING_INPUT*/";
+                returnValue[0] += "/*MAPPING_INPUT not managed yet*/";
                 break;
             case MAPPING_LEAF:
-                returnValue[0] += "/*MAPPING_LEAF*/";
+                returnValue[0] += "/*MAPPING_LEAF not managed yet*/";
                 break;
             case TYPE_CONVERTER:
-                returnValue[0] += "/*TYPE_CONVERTER*/";
+                returnValue[0] += "/*TYPE_CONVERTER not managed yet*/";
                 break;
             case TYPE_CONVERTER_IDENTITY:
-                returnValue[0] += "/*TYPE_CONVERTER_IDENTITY*/";
+                returnValue[0] += "/*TYPE_CONVERTER_IDENTITY not managed yet*/";
                 break;
-
             default:
                 break;
         }
@@ -214,16 +206,16 @@ public class AstJavascriptWriter {
                     isMatch = false;
                     break;
                 case PARENTHESIS_LEFT:
-                    returnValue += "/*PARENTHESIS_LEFT*/";
+                    returnValue += "/*PARENTHESIS_LEFT not managed yet*/";
                     break;
                 case PARENTHESIS_RIGHT:
-                    returnValue += "/*PARENTHESIS_RIGHT*/";
+                    returnValue += "/*PARENTHESIS_RIGHT not managed yet*/";
                     break;
                 case TEMPORAL_UNIT:
                     returnValue += "\'" + element.toString() + "\'";
                     break;
                 case UNKNOWN:
-                    returnValue += "/*UNKNOWN*/";
+                    returnValue += "/*UNKNOWN not managed yet*/";
                     break;
             }
         }
@@ -301,13 +293,9 @@ public class AstJavascriptWriter {
         String returnValue = "";
         BinaryMetadata binaryMetadata = (BinaryMetadata) metadata;
         DefaultOperator operator = (DefaultOperator) metadata.getOperator();
-        if (operator == xor) {
-            returnValue += writeXOR(binaryMetadata.getLeft(), binaryMetadata.getRight());
-        } else {
-            returnValue += writeMetadata(binaryMetadata.getLeft());
-            returnValue = writeOperator(operator, returnValue, binaryMetadata);
-            returnValue += writeMetadata(binaryMetadata.getRight());
-        }
+        returnValue += writeMetadata(binaryMetadata.getLeft());
+        returnValue = writeOperator(operator, returnValue, binaryMetadata);
+        returnValue += writeMetadata(binaryMetadata.getRight());
         return returnValue;
     }
 
@@ -320,14 +308,6 @@ public class AstJavascriptWriter {
         String[] returnValueTab = new String[1];
         returnValueTab[0] = returnValue;
         switch (element) {
-            case no_operator:
-                break;
-            case rule:
-                break;
-            case validate:
-                break;
-            case empty:
-                break;
             case and:
                 returnValueTab[0] += " && ";
                 break;
@@ -376,12 +356,6 @@ public class AstJavascriptWriter {
                         "(element){" +
                         " return "
                         : "[" + returnValueTab[0] + "].every(function(element){ return ";
-            case count:
-                break;
-            case sum:
-                break;
-            case min:
-                break;
             case not:
                 returnValueTab[0] += "!(" + returnValueTab[0] + ")";
                 break;
@@ -393,8 +367,6 @@ public class AstJavascriptWriter {
                 break;
             case times:
                 returnValueTab[0] += " * ";
-                break;
-            case when:
                 break;
             case equals:
                 if (isTemporalPredicate) {
@@ -418,8 +390,6 @@ public class AstJavascriptWriter {
                 break;
             case as_string:
                 returnValueTab[0] = "String(" + returnValueTab[0] + ")";
-                break;
-            case as:
                 break;
             case with:
                 break;
@@ -776,16 +746,6 @@ public class AstJavascriptWriter {
         }
     }
 
-    private String writeXOR(Metadata left, Metadata right) {
-        return "(!" + writeMetadata(left) + " && " + writeMetadata(right) + ") " +
-                "|| (" + writeMetadata(left) + " && !" + writeMetadata(right) + ")";
-    }
-
-    private String writeXOR(Element left, Element right) {
-        return "(!" + left.toString() + " && " + right.toString() + ") " +
-                "|| (" + left.toString() + " && !" + right.toString() + ")";
-    }
-
     private String writeTabValues(String values) {
         values = values.replace("[", "");
         values = values.replace("]", "");
@@ -803,34 +763,6 @@ public class AstJavascriptWriter {
         } else {
             values += "\'" + valuesArray[valuesArray.length - 1] + "\']";
         }
-        switch (anyAllNoneContains) {
-            case 0:
-                values += ".indexOf(element) >= 0 ;})";
-                isMatch = false;
-                break;
-            case 1:
-                if (isMatch) {
-                    values += ".every(function(elt){ return elt.match(element);});})";
-                } else {
-                    values += ".some(function(elt){ return elt.match(element);});})";
-                }
-                isMatch = false;
-                break;
-            case 2:
-                values += ".indexOf(element) < 0;})";
-                isMatch = false;
-                break;
-            case 3:
-                if (useRegexp) {
-                    values += ".*/);})";
-                    useRegexp = false;
-                } else {
-                    values += ");})";
-                }
-            default:
-                break;
-        }
-        anyAllNoneContains = -1;
         return values;
     }
 
@@ -842,8 +774,8 @@ public class AstJavascriptWriter {
     private boolean isIterableOrField(Metadata metadata) {
         if (metadata.readable().startsWith(": ") || metadata.readable().startsWith(" : ")) {
             return true;
-        } else if (((Element) ((LeafMetadata) metadata).elements().getFirst()).getReadable().toString().contains(
-                "Iterable")) {
+        } else if (((Element) ((LeafMetadata) metadata).elements().getFirst())
+                .getReadable().toString().contains("Iterable")) {
             return true;
         }
         return false;
