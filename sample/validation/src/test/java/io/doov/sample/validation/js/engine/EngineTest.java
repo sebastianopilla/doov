@@ -76,6 +76,11 @@ public class EngineTest {
                 throw new RuntimeException(e);
             }
         });
+        try {
+            ops.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("Passing " + counter[0] + " out of " + index[0] + " tests with true value.");
     }
 }

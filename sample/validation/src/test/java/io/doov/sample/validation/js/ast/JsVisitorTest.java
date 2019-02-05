@@ -37,7 +37,7 @@ public class JsVisitorTest {
                         System.out.println(new String(ops.toByteArray(), Charset.forName("UTF-8")));
                         ops.reset();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        throw new RuntimeException(e);
                     }
                 })
                 .forEach(rule -> {
@@ -46,6 +46,11 @@ public class JsVisitorTest {
                     ops.reset();
 
                 });
+        try {
+            ops.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
