@@ -3,13 +3,12 @@
  */
 package io.doov.js.ast;
 
-import static io.doov.core.dsl.meta.DefaultOperator.*;
+import static io.doov.core.dsl.meta.DefaultOperator.not;
 import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Deque;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,37 +32,12 @@ public class AstJavascriptWriter {
     private boolean alreadyComputed;    // allow us to know if some value have already been processed
     private boolean isFinished; // keep track if we finished processing the elements remaining (NaryMetadata)
     private boolean isDiff; // allow us to know if we are in the operator age_at
-    private static ArrayList<DefaultOperator> exceptionOperator;
 
     public AstJavascriptWriter(OutputStream ops) {
         this.ops = ops;
         this.output = "";
-        exceptionOperator = new ArrayList<>();
-        initExceptionOperator();
     }
 
-    private void initExceptionOperator() {
-        exceptionOperator.add(match_none);
-        exceptionOperator.add(match_all);
-        exceptionOperator.add(match_any);
-        exceptionOperator.add(contains);
-        exceptionOperator.add(starts_with);
-        exceptionOperator.add(ends_with);
-        exceptionOperator.add(after);
-        exceptionOperator.add(after_or_equals);
-        exceptionOperator.add(before);
-        exceptionOperator.add(before_or_equals);
-        exceptionOperator.add(age_at_days);
-        exceptionOperator.add(age_at_months);
-        exceptionOperator.add(age_at_years);
-        exceptionOperator.add(equals);
-        exceptionOperator.add(greater_or_equals);
-        exceptionOperator.add(greater_than);
-        exceptionOperator.add(lesser_than);
-        exceptionOperator.add(lesser_or_equals);
-        exceptionOperator.add(as_a_number);
-        exceptionOperator.add(as_string);
-    }
 
     private void initValue() {
         this.parenthesisCount = 0;
