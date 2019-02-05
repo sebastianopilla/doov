@@ -110,7 +110,7 @@ public class TemporalFunctionTest {
         reduce = result.reduce(FAILURE);
 
         assertFalse(result.value());
-        assertThat(rule.readable(LOCALE)).isEqualTo("rule when A age at as days today + B day(s) = 2 validate");
+        assertThat(rule.readable(LOCALE)).isEqualTo("rule when (A age at as days (today + B day(s))) = 2 validate");
         assertThat(result.getFailureCause(LOCALE)).isEqualTo("A age at as days today + B day(s) = 2");
     }
 
@@ -121,7 +121,7 @@ public class TemporalFunctionTest {
         reduce = result.reduce(FAILURE);
 
         assertFalse(result.value());
-        assertThat(rule.readable(LOCALE)).isEqualTo("rule when A age at as months today + B month(s) = 2 validate");
+        assertThat(rule.readable(LOCALE)).isEqualTo("rule when (A age at as months (today + B month(s))) = 2 validate");
         assertThat(result.getFailureCause(LOCALE)).isEqualTo("A age at as months today + B month(s) = 2");
     }
 
@@ -132,7 +132,7 @@ public class TemporalFunctionTest {
         reduce = result.reduce(FAILURE);
 
         assertFalse(result.value());
-        assertThat(rule.readable(LOCALE)).isEqualTo("rule when A age at as years today + B year(s) = 2 validate");
+        assertThat(rule.readable(LOCALE)).isEqualTo("rule when (A age at as years (today + B year(s))) = 2 validate");
         assertThat(result.getFailureCause(LOCALE)).isEqualTo("A age at as years today + B year(s) = 2");
     }
 
