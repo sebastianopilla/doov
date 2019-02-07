@@ -137,6 +137,10 @@ public class HtmlWriter {
         write(beginTd(classes));
     }
 
+    protected void writeBeginTdWithId(String id) {
+        write(beginTdWithId(id));
+    }
+
     protected void writeEndTd() {
         write(endTd());
     }
@@ -190,6 +194,10 @@ public class HtmlWriter {
         }
     }
 
+    static String beginElementWithId(String elementType, String id) {
+        return "<" + elementType + (!id.isEmpty() ? " id='" + id + "'" : "") + ">";
+    }
+
     static String beginElement(String elementType, String... classes) {
         return "<" + elementType + (classes.length > 0 ? " class='" + String.join(" ", classes) + "'" : "") + ">";
     }
@@ -237,6 +245,10 @@ public class HtmlWriter {
 
     static String beginDivWithStyle(String style, String... classes) {
         return beginElementWithStyle("div", style, classes);
+    }
+
+    static String beginTdWithId(String id) {
+        return beginElementWithId("td", id);
     }
 
     static String endDiv() {

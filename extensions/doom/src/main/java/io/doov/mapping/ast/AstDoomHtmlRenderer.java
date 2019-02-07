@@ -39,7 +39,7 @@ public class AstDoomHtmlRenderer extends HtmlWriter {
         toHtml(metadata, new ArrayDeque<>());
     }
 
-    public Metadata getLeafFromSingleMapping(Metadata metadata) {
+    protected Metadata getLeafFromSingleMapping(Metadata metadata) {
         if (metadata.type() == MAPPING_LEAF) {
             return metadata;
         }
@@ -81,7 +81,7 @@ public class AstDoomHtmlRenderer extends HtmlWriter {
         }
     }
 
-    public void singleMapping(Metadata metadata, ArrayDeque<Metadata> parents) {
+    protected void singleMapping(Metadata metadata, ArrayDeque<Metadata> parents) {
         write(headArray);
         writeBeginTr();
         writeBeginTd();
@@ -100,11 +100,11 @@ public class AstDoomHtmlRenderer extends HtmlWriter {
         writeEndTable();
     }
 
-    private void typeConverter(Metadata metadata, ArrayDeque<Metadata> parents) {
+    protected void typeConverter(Metadata metadata, ArrayDeque<Metadata> parents) {
         write(metadata.readable());
     }
 
-    private void elseMapping(Metadata metadata, ArrayDeque<Metadata> parents) {
+    protected void elseMapping(Metadata metadata, ArrayDeque<Metadata> parents) {
         writeEndLi();
         if (metadata.children().count() == 0) {
             writeEndUl();
@@ -123,7 +123,7 @@ public class AstDoomHtmlRenderer extends HtmlWriter {
         }
     }
 
-    public void toHtmlChildren(Metadata metadata, ArrayDeque<Metadata> parents) {
+    private void toHtmlChildren(Metadata metadata, ArrayDeque<Metadata> parents) {
         metadata.children().forEach(chld -> toHtml(chld, parents));
     }
 

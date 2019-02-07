@@ -4,6 +4,7 @@
 package io.doov.mapping.ast;
 
 import static io.doov.mapping.ast.AstDoomHtmlRenderer.toHtml;
+import static java.util.Locale.FRANCE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.jsoup.Jsoup.parseBodyFragment;
 
@@ -25,7 +26,7 @@ public class MappingRulesVisitorTest {
     public void testHtml() {
         model.mappingRules().forEach(mappingRule -> {
             System.out.println(
-                    AstDoomVisitorSimple.astToHtml(mappingRule.metadata(), Locale.FRANCE)
+                    AstDoomVisitorSimple.astToHtml(mappingRule.metadata(), FRANCE)
             );
             System.out.println("--------------");
         });
@@ -35,10 +36,19 @@ public class MappingRulesVisitorTest {
     public void testHtmlRenderer() {
         model.mappingRules().forEach(mappingRule -> {
             System.out.println(
-                    toHtml(mappingRule.metadata(), Locale.FRANCE)
+                    toHtml(mappingRule.metadata(), FRANCE)
             );
             System.out.println("--------------");
         });
+    }
+
+    @Test
+    public void testHtmlRenderer2() {
+        System.out.println(
+                AstDoomHtmlRenderer2.toHtml(model.getModelLF(), model.getModelI(),
+                        model.getMappingRuleFieldByField().metadata()
+                        , FRANCE)
+        );
     }
 
     static Document documentOf(Metadata metadata) {
@@ -192,7 +202,7 @@ public class MappingRulesVisitorTest {
                 "converter'");
 
         assertThat(doc.body().select("table tr").get(1)
-                .select("td").get(1))
+                .select("td").get(2))
                 .extracting(Element::text).containsExactly("tauxModeleInsurer");
     }
 
