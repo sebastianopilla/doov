@@ -21,7 +21,10 @@ public class BooleanConditionJavascriptTest {
     private static GenericModel model = new GenericModel();
     private static BooleanFieldInfo A = model.booleanField(true, "A"),
             B = model.booleanField(false, "B"),
-            C = model.booleanField(false, "C");
+            C = model.booleanField(false, "C"),
+            D = model.booleanField(true, "D"),
+            E = model.booleanField(true, "E"),
+            F = model.booleanField(true, "F");
     private String request, result = "";
     private static ByteArrayOutputStream ops;
     private static ScriptEngine engine;
@@ -169,6 +172,15 @@ public class BooleanConditionJavascriptTest {
     @Test
     void eval_isFalse_true() throws ScriptException {
         rule = when(B.isFalse()).validate();
+        writer.writeRule(rule);
+        request = new String(ops.toByteArray(), Charset.forName("UTF-8"));
+        result = engine.eval(request).toString();
+        assertEquals("true", result);
+    }
+
+    @Test
+    void eval_multi_and() throws ScriptException {
+        rule = when(A.isTrue().and(D.isTrue().and(E.isTrue().and(F.isTrue())))).validate();
         writer.writeRule(rule);
         request = new String(ops.toByteArray(), Charset.forName("UTF-8"));
         result = engine.eval(request).toString();

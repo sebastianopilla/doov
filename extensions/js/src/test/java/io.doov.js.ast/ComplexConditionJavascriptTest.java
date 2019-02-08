@@ -281,8 +281,6 @@ public class ComplexConditionJavascriptTest {
         assertEquals("true", result);
     }
 
-
-
     @AfterEach
     void afterEach() {
         System.out.println(request + " -> " + result + "\n");

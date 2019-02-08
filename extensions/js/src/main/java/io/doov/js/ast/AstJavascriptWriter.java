@@ -38,7 +38,6 @@ public class AstJavascriptWriter {
         this.output = "";
     }
 
-
     private void initValue() {
         this.parenthesisCount = 0;
         this.anyAllNoneContains = -1;
@@ -239,9 +238,11 @@ public class AstJavascriptWriter {
         String returnValue = "";
         BinaryMetadata binaryMetadata = (BinaryMetadata) metadata;
         DefaultOperator operator = (DefaultOperator) metadata.getOperator();
+
         returnValue += writeMetadata(binaryMetadata.getLeft());
         returnValue = writeOperator(operator, returnValue, binaryMetadata);
         returnValue += writeMetadata(binaryMetadata.getRight());
+        returnValue = "(" + returnValue + ")";
         return returnValue;
     }
 
