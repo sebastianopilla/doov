@@ -15,13 +15,8 @@
  */
 package io.doov.core.dsl.meta.ast;
 
-import static io.doov.core.dsl.meta.DefaultOperator.and;
-import static io.doov.core.dsl.meta.DefaultOperator.count;
-import static io.doov.core.dsl.meta.DefaultOperator.match_all;
-import static io.doov.core.dsl.meta.DefaultOperator.match_any;
-import static io.doov.core.dsl.meta.DefaultOperator.match_none;
-import static io.doov.core.dsl.meta.DefaultOperator.or;
-import static io.doov.core.dsl.meta.DefaultOperator.when;
+import static io.doov.core.dsl.meta.DefaultOperator.*;
+import static io.doov.core.dsl.meta.MetadataType.WHEN;
 import static io.doov.core.dsl.meta.ReturnType.BOOLEAN;
 import static io.doov.core.dsl.meta.ast.ExclusionBar.BIG;
 import static io.doov.core.dsl.meta.ast.ExclusionBar.SMALL;
@@ -32,10 +27,7 @@ import static java.util.Arrays.asList;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.NumberFormat;
-import java.util.ArrayDeque;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 import io.doov.core.dsl.lang.ValidationRule;
 import io.doov.core.dsl.meta.Metadata;
@@ -44,6 +36,7 @@ import io.doov.core.dsl.meta.i18n.ResourceProvider;
 import io.doov.core.dsl.meta.predicate.PredicateMetadata;
 
 public class HtmlWriter {
+
     static final String SPACE = "&nbsp;";
     static final String APOS = "&apos;";
     static final String BR = "<br>";
@@ -137,6 +130,10 @@ public class HtmlWriter {
         write(beginTd(classes));
     }
 
+    protected void writeBeginTh(String... classes) {
+        write(beginTh(classes));
+    }
+
     protected void writeBeginTdWithId(String id) {
         write(beginTdWithId(id));
     }
@@ -151,6 +148,10 @@ public class HtmlWriter {
 
     protected void writeEndTr() {
         write(endTr());
+    }
+
+    protected void writeEndTh() {
+        write(endTh());
     }
 
     protected void writeBeginI(String... classes) {
@@ -273,6 +274,14 @@ public class HtmlWriter {
 
     static String endTd() {
         return endElement("td");
+    }
+
+    static String beginTh(String[] classes) {
+        return beginElement("th", classes);
+    }
+
+    static String endTh() {
+        return endElement("th");
     }
 
     static String beginTr(String[] classes) {

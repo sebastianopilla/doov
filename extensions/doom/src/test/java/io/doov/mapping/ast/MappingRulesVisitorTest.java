@@ -43,6 +43,14 @@ public class MappingRulesVisitorTest {
     }
 
     @Test
+    public void testHtmlRendererTable() {
+        System.out.println(
+                AstDoomHtmlRendererTable.toHtml(model.getMappingRule9().metadata()
+                        , FRANCE)
+        );
+    }
+
+    @Test
     public void testHtmlRenderer2() {
         System.out.println(
                 AstDoomHtmlRenderer2.toHtml(model.getModelLF(), model.getModelI(),

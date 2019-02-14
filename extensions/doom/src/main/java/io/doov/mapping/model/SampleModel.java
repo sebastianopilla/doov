@@ -105,13 +105,15 @@ public class SampleModel {
 
         mappingRule5 = map(nomConducteur).using(stringToIntegerTypeConverter3).to(tauxI);
 
+        mappingRule4 = map(tauxLF, tauxLF2, tauxLF3).using(counter("count taux converter")).to(tauxI);
+
         mappingRule3 = DOOV.when(tauxLF.isNull().and(nomConducteur.isNull())).then(
                 mappings(
                         mappingRule2,
                         DOOV.when(nomConducteur.allMatch("BUBU", "DUMM")).then(
                                 mappingRule1
                         ).otherwise(
-                                mappingRule5
+                                mappingRule4
                         )
                 )
         ).otherwise(
@@ -122,8 +124,6 @@ public class SampleModel {
         map(map(tauxLF).to(tauxI))
                 .using(converter(mappingRule -> 100, "hack"))
                 .to(tauxLF);*/
-
-        mappingRule4 = map(tauxLF, tauxLF2, tauxLF3).using(counter("count taux converter")).to(tauxI);
 
         mappingRule6 = DOOV.when(tauxLF.isNull().and(nomConducteur.isNull())).then(
                 mappings(
