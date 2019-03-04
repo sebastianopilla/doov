@@ -51,6 +51,7 @@ public class HtmlWriter {
     static final String CSS_VALIDATE = "dsl-token-validate";
     static final String CSS_NARY = "dsl-token-nary";
     static final String CSS_WHEN = "dsl-token-when";
+    static final String CSS_SINGLE_MAPPING = "dsl-token-single-mapping";
     static final String CSS_OPERATOR = "dsl-token-operator";
     static final String CSS_VALUE = "dsl-token-value";
     static final String CSS_FIELD = "dsl-token-field";

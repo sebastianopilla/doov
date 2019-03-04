@@ -78,6 +78,7 @@ public class AstHtmlRenderer extends HtmlWriter {
                 case LEAF_PREDICATE:
                 case FIELD_PREDICATE:
                 case LEAF_VALUE:
+                case MAPPING_LEAF:
                     leaf(metadata, parents);
                     break;
                 case UNARY_PREDICATE:
@@ -89,12 +90,21 @@ public class AstHtmlRenderer extends HtmlWriter {
                 case FIELD_PREDICATE_MATCH_ANY:
                     fieldMatchAny(metadata, parents);
                     break;
+                case SINGLE_MAPPING:
+                    singleMapping(metadata, parents);
+                    break;
                 default:
                     throw new IllegalStateException(metadata.type().name());
             }
         } finally {
             parents.pop();
         }
+    }
+    
+    private void singleMapping(Metadata metadata, ArrayDeque<Metadata> parents) {
+        writeBeginSpan(CSS_SINGLE_MAPPING);
+        toHtml(metadata.childAt(0), parents);
+        writeEndSpan();
     }
 
     private void when(Metadata metadata, ArrayDeque<Metadata> parents) {
