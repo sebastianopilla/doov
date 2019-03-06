@@ -4,4 +4,5 @@
 package io.doov.core.grammar;
 
 public abstract class Node {
+
 }
