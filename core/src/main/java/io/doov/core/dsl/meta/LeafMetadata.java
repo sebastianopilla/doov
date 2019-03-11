@@ -28,7 +28,7 @@ import io.doov.core.dsl.lang.Readable;
 
 public abstract class LeafMetadata<M extends LeafMetadata<M>> extends AbstractMetadata {
     private static final Collector<CharSequence, ?, String> COLLECTOR_LIST = joining(", ", " : ", "");
-    private final MetadataType type;
+    public  final MetadataType type;
     private final Deque<Element> elements;
 
     public LeafMetadata(MetadataType type) {

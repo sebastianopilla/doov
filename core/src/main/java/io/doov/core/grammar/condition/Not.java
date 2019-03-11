@@ -3,13 +3,17 @@
  */
 package io.doov.core.grammar.condition;
 
-import io.doov.core.grammar.Node;
-import io.doov.core.grammar.Value;
+import io.doov.core.grammar.application.Apply1;
+import io.doov.core.grammar.value.Value;
 
-public class Not extends Node {
-    public final Value<Boolean> input;
+public class Not extends Apply1<Boolean,Boolean> {
 
     public Not(Value<Boolean> input) {
-        this.input = input;
+        super(Boolean.class,input);
+    }
+
+    @Override
+    public String js(String obj) {
+        return String.format("!(%s)",input.js(obj));
     }
 }

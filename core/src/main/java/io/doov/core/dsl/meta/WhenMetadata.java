@@ -35,7 +35,7 @@ public class WhenMetadata extends AbstractMetadata {
     public MetadataType type() {
         return WHEN;
     }
-    
+
     @Override
     public Operator getOperator() {
         return when;

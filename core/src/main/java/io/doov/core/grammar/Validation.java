@@ -3,10 +3,17 @@
  */
 package io.doov.core.grammar;
 
-public class Validation extends Node {
-    public final Value<Boolean> rule;
+import io.doov.core.grammar.value.Value;
 
-    public Validation(Value<Boolean> rule) {
-        this.rule = rule;
+public class Validation {
+
+    public final Value<Boolean> value;
+
+    public Validation(Value<Boolean> value) {
+        this.value = value;
+    }
+
+    public String js() {
+        return "input => " + value.js("input");
     }
 }

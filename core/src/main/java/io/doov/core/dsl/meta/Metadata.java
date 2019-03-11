@@ -32,7 +32,7 @@ import io.doov.core.dsl.meta.ast.AstVisitorUtils;
  * Interface for the description of a node in the syntax tree.
  */
 public interface Metadata extends Readable {
-    
+
     default Operator getOperator() {
         return no_operator;
     }

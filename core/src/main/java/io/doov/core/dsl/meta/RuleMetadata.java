@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 public class RuleMetadata extends AbstractMetadata {
 
-    private final Metadata value;
+    public final Metadata value;
 
     public RuleMetadata(Metadata value) {
         this.value = value;
